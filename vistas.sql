@@ -59,4 +59,13 @@ FROM
     club c
     INNER JOIN jugador j ON c.ID = j.ID_club
 GROUP BY
-    c.ID;
+    puntaje_maximo;
+
+CREATE VIEW
+    ranking_jugadores AS
+SELECT
+    *
+from
+    jugador
+order by
+    rating desc;
