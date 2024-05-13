@@ -2,6 +2,10 @@
 
 Esta es una base de datos diseñada para gestionar torneos de tenis de mesa, jugadores, partidos, árbitros, clubes y sets. A continuación se presenta un desglose de las tablas y sus estructuras:
 
+## Modelo relacional
+
+![Modelo relacional](./modelo-relacional.PNG)
+
 ## Tablas
 
 1. **club**
