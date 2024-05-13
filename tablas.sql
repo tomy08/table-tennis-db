@@ -32,7 +32,7 @@ CREATE TABLE
         apellido VARCHAR(50) NOT NULL,
         fecha_nac DATE NOT NULL,
         rating INT NOT NULL,
-        ID_club INT,
+        ID_club INT DEFAULT 1,
         FOREIGN KEY (ID_club) REFERENCES club (ID)
     );
 
