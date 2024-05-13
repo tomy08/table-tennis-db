@@ -1,5 +1,6 @@
 USE table_tennis;
 
+-- obtener una estdistica full de los jugadores
 CREATE VIEW
     estadisticas_jugadores AS
 SELECT
@@ -47,7 +48,7 @@ FROM
 GROUP BY
     j.ID;
 
--- Crear la vista
+-- obtener el puntaje de los clubes (suma de los ratings de los jugadores del mismo club)
 CREATE VIEW
     puntaje_maximo_club AS
 SELECT
@@ -61,6 +62,7 @@ FROM
 GROUP BY
     puntaje_maximo;
 
+-- obtener el ranking de los jugadores
 CREATE VIEW
     ranking_jugadores AS
 SELECT
