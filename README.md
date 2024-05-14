@@ -1,6 +1,6 @@
 # Base de Datos de Tenis de Mesa
 
-Esta es una base de datos diseñada para gestionar torneos de tenis de mesa, jugadores, partidos, árbitros, clubes y sets. A continuación se presenta un desglose de las tablas y sus estructuras:
+Esta es una base de datos diseñada para gestionar torneos de tenis de mesa, jugadores, partidos, árbitros, clubes y sets. 
 
 ## Modelo relacional
 
