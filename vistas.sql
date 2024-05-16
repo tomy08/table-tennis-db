@@ -1,8 +1,9 @@
 USE table_tennis;
 
+DROP VIEW IF EXISTS estadisticas_jugadores;
+
 -- obtener una estdistica full de los jugadores
-CREATE VIEW
-    estadisticas_jugadores AS
+CREATE VIEW estadisticas_jugadores AS
 SELECT
     j.ID AS jugador_ID,
     j.nombre AS nombre_jugador,
@@ -41,33 +42,27 @@ SELECT
             ELSE 0
         END
     ) AS partidos_ganados
-FROM
-    jugador j
+FROM jugador j
     LEFT JOIN partido p ON j.ID = p.ID_jugador1
     OR j.ID = p.ID_jugador2
 GROUP BY
     j.ID;
 
+DROP VIEW IF EXISTS puntaje_maximo_club;
 -- obtener el puntaje de los clubes (suma de los ratings de los jugadores del mismo club)
-CREATE VIEW
-    puntaje_maximo_club AS
+CREATE VIEW puntaje_maximo_club AS
 SELECT
     c.ID AS club_ID,
     c.nombre AS nombre_club,
     SUM(j.rating) AS puntaje_maximo,
     COUNT(*) AS cantidad_jugadores
-FROM
-    club c
+FROM club c
     INNER JOIN jugador j ON c.ID = j.ID_club
-GROUP BY
-    puntaje_maximo;
+ORDER BY puntaje_maximo;
 
+DROP VIEW IF EXISTS ranking_jugadores;
 -- obtener el ranking de los jugadores
-CREATE VIEW
-    ranking_jugadores AS
-SELECT
-    *
-from
-    jugador
-order by
-    rating desc;
+CREATE VIEW ranking_jugadores AS
+SELECT *
+from jugador
+order by rating desc;
