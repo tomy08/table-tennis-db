@@ -15,13 +15,13 @@ DECLARE contador_jugador2 INT DEFAULT 0;
 SELECT COUNT(*) INTO contador_jugador1
 FROM sets
 WHERE
-    ID_partido = obtenerGanadorPartido.ID_partido
+    sets.ID_partido = ID_partido
     AND ID_ganador = sets.ID_jugador1;
 
 SELECT COUNT(*) INTO contador_jugador2
 FROM sets
 WHERE
-    ID_partido = obtenerGanadorPartido.ID_partido
+    sets.ID_partido = ID_partido
     AND ID_ganador = sets.ID_jugador2;
 
 IF contador_jugador1 > contador_jugador2 THEN
