@@ -1,3 +1,7 @@
+-- Active: 1715906879241@@127.0.0.1@3306@table_tennis
+
+USE table_tennis;
+
 INSERT INTO
     arbitro (nombre, apellido, fecha_nac)
 VALUES (
