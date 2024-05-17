@@ -58,6 +58,8 @@ SELECT
     COUNT(*) AS cantidad_jugadores
 FROM club c
     INNER JOIN jugador j ON c.ID = j.ID_club
+GROUP BY
+    c.ID
 ORDER BY puntaje_maximo;
 
 DROP VIEW IF EXISTS ranking_jugadores;
