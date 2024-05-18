@@ -17,13 +17,13 @@ BEGIN
     FROM sets
     WHERE
         sets.ID_partido = ID_partido
-        AND sets.ID_ganador = sets.ID_jugador1;
+        AND sets.player1_games_won > sets.player2_games_won;
 
     SELECT COUNT(*) INTO contador_jugador2
     FROM sets
     WHERE
         sets.ID_partido = ID_partido
-        AND sets.ID_ganador = sets.ID_jugador2;
+        AND sets.player1_games_won < sets.player2_games_won;
 
     IF contador_jugador1 > contador_jugador2 THEN
         SET ganador = (SELECT ID_jugador1 FROM partido WHERE ID = ID_partido);
@@ -118,6 +118,17 @@ BEGIN
     WHERE ID = jugador2_id;
 
     RETURN 1;
+END$$
+
+DELIMITER;
+
+DELIMITER $$
+
+CREATE TRIGGER after_insert_partido
+AFTER INSERT ON partido
+FOR EACH ROW
+BEGIN
+    CALL actualizarRanking(NEW.ID);
 END$$
 
 DELIMITER;
