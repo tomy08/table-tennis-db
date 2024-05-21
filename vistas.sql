@@ -68,3 +68,26 @@ CREATE VIEW ranking_jugadores AS
 SELECT *
 from jugador
 order by rating desc;
+
+DROP VIEW IF EXISTS MatchView;
+
+CREATE VIEW MatchView AS
+SELECT
+    p.ID AS match_id,
+    p.ID_arbitro AS referee_id,
+    p.ID_jugador1 AS player1_id,
+    CONCAT(j1.nombre, ' ', j1.apellido) AS player1_name,
+    j1.rating AS player1_rating,
+    p.ID_jugador2 AS player2_id,
+    CONCAT(j2.nombre, ' ', j2.apellido) AS player2_name,
+    j2.rating AS player2_rating,
+    p.ID_torneo AS tournament_id,
+    p.instancia AS stage,
+    s.numero_set AS set_number,
+    s.player1_games_won,
+    s.player2_games_won
+FROM
+    partido p
+    LEFT JOIN sets s ON p.ID = s.ID_partido
+    INNER JOIN jugador j1 ON p.ID_jugador1 = j1.ID
+    INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID;
