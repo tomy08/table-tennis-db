@@ -53,9 +53,10 @@ BEGIN
     DECLARE jugador2_id INT;
 
     -- Obtener la instancia actual del partido
-    SELECT instancia INTO instancia_actual
-    FROM partido
-    WHERE ID = ID_partido;
+    SELECT i.nombre INTO instancia_actual
+    FROM partido p
+    JOIN instancia i ON p.ID_instancia = i.ID
+    WHERE p.ID = ID_partido;
 
     -- Obtener IDs de los jugadores
     SELECT ID_jugador1, ID_jugador2 INTO jugador1_id, jugador2_id
