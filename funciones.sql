@@ -123,6 +123,8 @@ END$$
 
 DELIMITER;
 
+DROP TRIGGER IF EXISTS after_insert_partido;
+
 DELIMITER $$
 
 CREATE TRIGGER after_insert_partido
