@@ -60,3 +60,10 @@ Esta es una base de datos diseñada para gestionar torneos de tenis de mesa, jug
 - **obtenerGanadorPartido(ID_partido INT)**
 
 - **actualizarRanking(ID_partido INT)**
+
+## Vistas
+
+- **estadisticas_jugadores**
+- **puntaje_maximo_club**
+- **ranking_jugadores**
+- **MatchView**
