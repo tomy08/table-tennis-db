@@ -1,47 +1,36 @@
--- Active: 1715906879241@@127.0.0.1@3306@table_tennis
-
 USE table_tennis;
 
+-- Insertar datos en la tabla ubicacion
 INSERT INTO
-    arbitro (nombre, apellido, fecha_nac)
-VALUES (
-        "Jose",
-        "Rodolfo",
-        "1999-12-01"
-    ),
-    (
-        "Agustin",
-        "Fernández",
-        "2000-06-15"
-    ),
-    (
-        "Jesús",
-        "Ramon",
-        "2000-06-15"
-    );
+    ubicacion (nombre)
+VALUES ('Buenos Aires'),
+    ('Av. Directorio 4147'),
+    ('Roma 950');
 
+-- Insertar datos en la tabla club
 INSERT INTO
     club (
         nombre,
-        ubicacion,
+        ID_ubicacion,
         fecha_creacion
     )
 VALUES (
-        "Jugador Libre",
-        "Buenos Aires",
-        "1900-01-01"
+        'Jugador Libre',
+        1,
+        '1900-01-01'
     ),
     (
-        "Alvear Club",
-        "Av. directorio 4147",
-        "1935-08-19"
+        'Alvear Club',
+        2,
+        '1935-08-19'
     ),
     (
-        "Ateneo Popular de Versailles",
-        "Roma 950",
-        "1938-07-02"
+        'Ateneo Popular de Versailles',
+        3,
+        '1938-07-02'
     );
 
+-- Insertar datos en la tabla jugador
 INSERT INTO
     jugador (
         nombre,
@@ -51,92 +40,124 @@ INSERT INTO
         ID_club
     )
 VALUES (
-        "Tomas",
-        "Santa Cruz",
-        "2007-05-24",
+        'Tomas',
+        'Santa Cruz',
+        '2007-05-24',
         0,
         2
     ),
     (
-        "Mateo",
-        "Diaz",
-        "2004-08-05",
+        'Mateo',
+        'Diaz',
+        '2004-08-05',
         0,
         1
     ),
     (
-        "Tiziano",
-        "Romeo",
-        "1999-02-27",
+        'Tiziano',
+        'Romeo',
+        '1999-02-27',
         0,
         3
     ),
     (
-        "Ramiro",
-        "González",
-        "2000-04-17",
+        'Ramiro',
+        'González',
+        '2000-04-17',
         0,
         1
     ),
     (
-        "Facundo",
-        "López",
-        "1980-12-12",
+        'Facundo',
+        'López',
+        '1980-12-12',
         0,
         3
     ),
     (
-        "Mauro",
-        "Martín",
-        "1990-07-21",
+        'Mauro',
+        'Martín',
+        '1990-07-21',
         0,
         2
     ),
     (
-        "Axel",
-        "Sánchez",
-        "2006-05-17",
+        'Axel',
+        'Sánchez',
+        '2006-05-17',
         0,
         1
     ),
     (
-        "Manuel",
-        "Gómez ",
-        "2010-02-19",
+        'Manuel',
+        'Gómez',
+        '2010-02-19',
         0,
         2
     );
 
+-- Insertar datos en la tabla arbitro
+INSERT INTO
+    arbitro (nombre, apellido, fecha_nac)
+VALUES (
+        'Jose',
+        'Rodolfo',
+        '1999-12-01'
+    ),
+    (
+        'Agustin',
+        'Fernández',
+        '2000-06-15'
+    ),
+    (
+        'Jesús',
+        'Ramon',
+        '2000-06-15'
+    );
+
+-- Insertar datos en la tabla instancia
+INSERT INTO
+    instancia (nombre)
+VALUES ('final'),
+    ('semifinal'),
+    ('cuartos'),
+    ('octavos'),
+    ('dieciseisavos'),
+    ('treintaidosavos');
+
+-- Insertar datos en la tabla torneo
 INSERT INTO
     torneo (
         nombre_torneo,
         fecha,
         categoria,
-        localidad
+        ID_ubicacion
     )
 VALUES (
-        "1er torneo Alvear Club",
-        "2024-05-20",
+        '1er torneo Alvear Club',
+        '2024-05-20',
         5,
-        "Av. Directorio 4147"
+        2
     );
 
+-- Insertar datos en la tabla partido
 INSERT INTO
     partido (
         ID_torneo,
         ID_arbitro,
         ID_jugador1,
         ID_jugador2,
-        instancia
+        ID_instancia
     )
-VALUES (1, 1, 1, 2, "cuartos"),
-    (1, 2, 3, 4, "cuartos"),
-    (1, 3, 5, 6, "cuartos"),
-    (1, 1, 7, 8, "cuartos"),
-    (1, 2, 1, 3, "semifinal"),
-    (1, 3, 6, 8, "semifinal"),
-    (1, 1, 1, 6, "final");
-
+VALUES (1, 1, 1, 2, 3), -- "cuartos"
+    (1, 2, 3, 4, 3), -- "cuartos"
+    (1, 3, 5, 6, 3), -- "cuartos"
+    (1, 1, 7, 8, 3), -- "cuartos"
+    (1, 2, 1, 3, 2), -- "semifinal"
+    (1, 3, 6, 8, 2), -- "semifinal"
+    (1, 1, 1, 6, 1);
+-- "final"
+-- Insertar datos en la tabla sets
 INSERT INTO
     sets (
         ID_partido,
