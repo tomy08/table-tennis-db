@@ -1,13 +1,21 @@
 USE table_tennis;
 
+-- Eliminar vistas si existen
 DROP VIEW IF EXISTS estadisticas_jugadores;
 
--- obtener una estdistica full de los jugadores
+DROP VIEW IF EXISTS puntaje_maximo_club;
+
+DROP VIEW IF EXISTS ranking_jugadores;
+
+DROP VIEW IF EXISTS match_view;
+
+-- Crear vista estadisticas_jugadores
 CREATE VIEW estadisticas_jugadores AS
 SELECT
     j.ID AS jugador_ID,
     j.nombre AS nombre_jugador,
     j.apellido AS apellido_jugador,
+    j.rating AS rating_jugador,
     SUM(
         CASE
             WHEN p.ID_jugador1 = j.ID
@@ -17,7 +25,7 @@ SELECT
     ) AS partidos_jugados,
     SUM(
         CASE
-            WHEN p.instancia = 'final'
+            WHEN i.nombre = 'final'
             AND (
                 p.ID_jugador1 = j.ID
                 OR p.ID_jugador2 = j.ID
@@ -27,7 +35,7 @@ SELECT
     ) AS finales_jugadas,
     SUM(
         CASE
-            WHEN p.instancia = 'final'
+            WHEN i.nombre = 'final'
             AND (
                 p.ID_jugador1 = j.ID
                 OR p.ID_jugador2 = j.ID
@@ -42,14 +50,15 @@ SELECT
             ELSE 0
         END
     ) AS partidos_ganados
-FROM jugador j
+FROM
+    jugador j
     LEFT JOIN partido p ON j.ID = p.ID_jugador1
     OR j.ID = p.ID_jugador2
+    LEFT JOIN instancia i ON p.ID_instancia = i.ID
 GROUP BY
     j.ID;
 
-DROP VIEW IF EXISTS puntaje_maximo_club;
--- obtener el puntaje de los clubes (suma de los ratings de los jugadores del mismo club)
+-- Crear vista puntaje_maximo_club
 CREATE VIEW puntaje_maximo_club AS
 SELECT
     c.ID AS club_ID,
@@ -62,16 +71,14 @@ GROUP BY
     c.ID
 ORDER BY puntaje_maximo;
 
-DROP VIEW IF EXISTS ranking_jugadores;
--- obtener el ranking de los jugadores
+-- Crear vista ranking_jugadores
 CREATE VIEW ranking_jugadores AS
 SELECT *
-from jugador
-order by rating desc;
+FROM jugador
+ORDER BY rating DESC;
 
-DROP VIEW IF EXISTS MatchView;
-
-CREATE VIEW MatchView AS
+-- Crear vista match_view
+CREATE VIEW match_view AS
 SELECT
     p.ID AS match_id,
     p.ID_arbitro AS referee_id,
@@ -82,7 +89,7 @@ SELECT
     CONCAT(j2.nombre, ' ', j2.apellido) AS player2_name,
     j2.rating AS player2_rating,
     p.ID_torneo AS tournament_id,
-    p.instancia AS stage,
+    i.nombre AS stage,
     s.numero_set AS set_number,
     s.player1_games_won,
     s.player2_games_won
@@ -90,4 +97,5 @@ FROM
     partido p
     LEFT JOIN sets s ON p.ID = s.ID_partido
     INNER JOIN jugador j1 ON p.ID_jugador1 = j1.ID
-    INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID;
+    INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID
+    INNER JOIN instancia i ON p.ID_instancia = i.ID;
