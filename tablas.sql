@@ -31,7 +31,7 @@ CREATE TABLE club (
     nombre VARCHAR(50) NOT NULL,
     ID_ubicacion INT NOT NULL,
     fecha_creacion DATE NOT NULL,
-    FOREIGN KEY (ID_ubicacion) REFERENCES ubicacion (ID)
+    FOREIGN KEY (ID_ubicacion) REFERENCES ubicacion (ID) ON DELETE SET NULL
 );
 
 CREATE TABLE jugador (
@@ -41,7 +41,7 @@ CREATE TABLE jugador (
     fecha_nac DATE NOT NULL,
     rating INT NOT NULL,
     ID_club INT DEFAULT 1,
-    FOREIGN KEY (ID_club) REFERENCES club (ID)
+    FOREIGN KEY (ID_club) REFERENCES club (ID) ON DELETE SET NULL
 );
 
 CREATE TABLE torneo (
@@ -82,10 +82,10 @@ CREATE TABLE partido (
     ID_jugador2 INT NOT NULL,
     ID_torneo INT NOT NULL,
     ID_instancia INT NOT NULL,
-    FOREIGN KEY (ID_jugador1) REFERENCES jugador (ID),
-    FOREIGN KEY (ID_jugador2) REFERENCES jugador (ID),
+    FOREIGN KEY (ID_jugador1) REFERENCES jugador (ID) ON DELETE SET NULL,
+    FOREIGN KEY (ID_jugador2) REFERENCES jugador (ID) ON DELETE SET NULL,
     FOREIGN KEY (ID_torneo) REFERENCES torneo (ID),
-    FOREIGN KEY (ID_arbitro) REFERENCES arbitro (ID),
+    FOREIGN KEY (ID_arbitro) REFERENCES arbitro (ID) ON DELETE SET NULL,
     FOREIGN KEY (ID_instancia) REFERENCES instancia (ID)
 );
 
