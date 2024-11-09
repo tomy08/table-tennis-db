@@ -4,8 +4,8 @@ DROP VIEW IF EXISTS ranking_jugadores;
 -- obtener el ranking de los jugadores
 CREATE VIEW ranking_jugadores AS
 SELECT *
-from jugador
-order by rating desc;
+FROM jugador
+ORDER BY rating DESC;
 
 DROP VIEW IF EXISTS estadisticas_jugadores;
 
@@ -99,7 +99,7 @@ SELECT
     t.ID AS torneo_ID,
     t.nombre_torneo AS nombre_torneo,
     p.ID AS partido_ID,
-    p.instancia AS instancia_partido,
+    i.nombre AS instancia_partido,
     j1.nombre AS nombre_jugador1,
     j1.apellido AS apellido_jugador1,
     j2.nombre AS nombre_jugador2,
@@ -119,16 +119,17 @@ FROM
     INNER JOIN jugador j1 ON p.ID_jugador1 = j1.ID
     INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID
     INNER JOIN sets s ON p.ID = s.ID_partido
+    INNER JOIN instancia i ON p.ID_instancia = i.ID
 GROUP BY
     t.ID,
     t.nombre_torneo,
     p.ID,
-    p.instancia,
+    i.nombre,
     j1.nombre,
     j1.apellido,
     j2.nombre,
     j2.apellido
-ORDER BY t.ID, p.instancia, j1.rating DESC, j2.rating DESC;
+ORDER BY t.ID, i.nombre, j1.rating DESC, j2.rating DESC;
 
 DROP VIEW IF EXISTS obtener_partidos_por_jugador;
 -- obtener partidos por jugador
@@ -139,7 +140,7 @@ SELECT
     j.nombre AS nombre_jugador,
     j.apellido AS apellido_jugador,
     p.ID AS partido_ID,
-    p.instancia AS instancia_partido,
+    i.nombre AS instancia_partido,
     CASE
         WHEN j.nombre = j1.nombre THEN j2.nombre
         WHEN j.nombre = j2.nombre THEN j1.nombre
@@ -166,17 +167,18 @@ FROM
     INNER JOIN sets s ON p.ID = s.ID_partido
     INNER JOIN jugador j1 ON p.ID_jugador1 = j1.ID
     INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID
+    INNER JOIN instancia i ON p.ID_instancia = i.ID
 GROUP BY
     j.ID,
     j.nombre,
     j.apellido,
     p.ID,
-    p.instancia,
+    i.nombre,
     j1.nombre,
     j1.apellido,
     j2.nombre,
     j2.apellido
-ORDER BY j.ID, p.instancia, j1.rating DESC, j2.rating DESC;
+ORDER BY j.ID, i.nombre, j1.rating DESC, j2.rating DESC;
 
 DROP VIEW IF EXISTS obtener_partidos_ganados_por_jugador;
 -- obtener partidos ganados por jugador
@@ -187,7 +189,7 @@ SELECT
     j.nombre AS nombre_jugador,
     j.apellido AS apellido_jugador,
     p.ID AS partido_ID,
-    p.instancia AS instancia_partido,
+    i.nombre AS instancia_partido,
     CASE
         WHEN j.nombre = j1.nombre THEN j2.nombre
         WHEN j.nombre = j2.nombre THEN j1.nombre
@@ -214,29 +216,30 @@ FROM
     INNER JOIN sets s ON p.ID = s.ID_partido
     INNER JOIN jugador j1 ON p.ID_jugador1 = j1.ID
     INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID
+    INNER JOIN instancia i ON p.ID_instancia = i.ID
 WHERE
-    p.instancia = 'final'
+    i.nombre = 'final'
 GROUP BY
     j.ID,
     j.nombre,
     j.apellido,
     p.ID,
-    p.instancia,
+    i.nombre,
     j1.nombre,
     j1.apellido,
     j2.nombre,
     j2.apellido
-ORDER BY j.ID, p.instancia, j1.rating DESC, j2.rating DESC;
+ORDER BY j.ID, i.nombre, j1.rating DESC, j2.rating DESC;
 
 DROP VIEW IF EXISTS obtener_finales_ganadas_por_jugador;
 -- obtener finales ganadas por jugador
-CREATE View obtener_finales_ganadas_por_jugador AS
+CREATE VIEW obtener_finales_ganadas_por_jugador AS
 SELECT
     j.ID AS jugador_ID,
     j.nombre AS nombre_jugador,
     j.apellido AS apellido_jugador,
     p.ID AS partido_ID,
-    p.instancia AS instancia_partido,
+    i.nombre AS instancia_partido,
     CASE
         WHEN j.nombre = j1.nombre THEN j2.nombre
         WHEN j.nombre = j2.nombre THEN j1.nombre
@@ -263,30 +266,31 @@ FROM
     INNER JOIN sets s ON p.ID = s.ID_partido
     INNER JOIN jugador j1 ON p.ID_jugador1 = j1.ID
     INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID
+    INNER JOIN instancia i ON p.ID_instancia = i.ID
 WHERE
-    p.instancia = 'final'
+    i.nombre = 'final'
     AND obtenerGanadorPartido (p.ID) = j.ID
 GROUP BY
     j.ID,
     j.nombre,
     j.apellido,
     p.ID,
-    p.instancia,
+    i.nombre,
     j1.nombre,
     j1.apellido,
     j2.nombre,
     j2.apellido
-ORDER BY j.ID, p.instancia, j1.rating DESC, j2.rating DESC;
+ORDER BY j.ID, i.nombre, j1.rating DESC, j2.rating DESC;
 
 DROP VIEW IF EXISTS obtener_finales_perdidas_por_jugador;
 -- obtener finales perdidas por jugador
-CREATE View obtener_finales_perdidas_por_jugador AS
+CREATE VIEW obtener_finales_perdidas_por_jugador AS
 SELECT
     j.ID AS jugador_ID,
     j.nombre AS nombre_jugador,
     j.apellido AS apellido_jugador,
     p.ID AS partido_ID,
-    p.instancia AS instancia_partido,
+    i.nombre AS instancia_partido,
     CASE
         WHEN j.nombre = j1.nombre THEN j2.nombre
         WHEN j.nombre = j2.nombre THEN j1.nombre
@@ -313,20 +317,21 @@ FROM
     INNER JOIN sets s ON p.ID = s.ID_partido
     INNER JOIN jugador j1 ON p.ID_jugador1 = j1.ID
     INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID
+    INNER JOIN instancia i ON p.ID_instancia = i.ID
 WHERE
-    p.instancia = 'final'
+    i.nombre = 'final'
     AND obtenerGanadorPartido (p.ID) != j.ID
 GROUP BY
     j.ID,
     j.nombre,
     j.apellido,
     p.ID,
-    p.instancia,
+    i.nombre,
     j1.nombre,
     j1.apellido,
     j2.nombre,
     j2.apellido
-ORDER BY j.ID, p.instancia, j1.rating DESC, j2.rating DESC;
+ORDER BY j.ID, i.nombre, j1.rating DESC, j2.rating DESC;
 
 DROP VIEW IF EXISTS obtener_partidos_ganados_por_jugador;
 -- obtener partidos ganados por jugador
@@ -337,7 +342,7 @@ SELECT
     j.nombre AS nombre_jugador,
     j.apellido AS apellido_jugador,
     p.ID AS partido_ID,
-    p.instancia AS instancia_partido,
+    i.nombre AS instancia_partido,
     CASE
         WHEN j.nombre = j1.nombre THEN j2.nombre
         WHEN j.nombre = j2.nombre THEN j1.nombre
@@ -364,6 +369,7 @@ FROM
     INNER JOIN sets s ON p.ID = s.ID_partido
     INNER JOIN jugador j1 ON p.ID_jugador1 = j1.ID
     INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID
+    INNER JOIN instancia i ON p.ID_instancia = i.ID
 WHERE
     j.ID = obtenerGanadorPartido (p.ID)
 GROUP BY
@@ -371,12 +377,12 @@ GROUP BY
     j.nombre,
     j.apellido,
     p.ID,
-    p.instancia,
+    i.nombre,
     j1.nombre,
     j1.apellido,
     j2.nombre,
     j2.apellido
-ORDER BY j.ID, p.instancia, j1.rating DESC, j2.rating DESC;
+ORDER BY j.ID, i.nombre, j1.rating DESC, j2.rating DESC;
 
 DROP VIEW IF EXISTS obtener_partidos_perdidos_por_jugador;
 -- obtener partidos perdidos por jugador
@@ -387,7 +393,7 @@ SELECT
     j.nombre AS nombre_jugador,
     j.apellido AS apellido_jugador,
     p.ID AS partido_ID,
-    p.instancia AS instancia_partido,
+    i.nombre AS instancia_partido,
     CASE
         WHEN j.nombre = j1.nombre THEN j2.nombre
         WHEN j.nombre = j2.nombre THEN j1.nombre
@@ -414,6 +420,7 @@ FROM
     INNER JOIN sets s ON p.ID = s.ID_partido
     INNER JOIN jugador j1 ON p.ID_jugador1 = j1.ID
     INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID
+    INNER JOIN instancia i ON p.ID_instancia = i.ID
 WHERE
     j.ID != obtenerGanadorPartido (p.ID)
 GROUP BY
@@ -421,9 +428,98 @@ GROUP BY
     j.nombre,
     j.apellido,
     p.ID,
-    p.instancia,
+    i.nombre,
     j1.nombre,
     j1.apellido,
     j2.nombre,
     j2.apellido
-ORDER BY j.ID, p.instancia, j1.rating DESC, j2.rating DESC;
+ORDER BY j.ID, i.nombre, j1.rating DESC, j2.rating DESC;
+
+DROP VIEW IF EXISTS promedio_rating_club;
+
+CREATE VIEW promedio_rating_club AS
+SELECT
+    c.ID AS club_ID,
+    c.nombre AS nombre_club,
+    AVG(j.rating) AS promedio_rating,
+    COUNT(j.ID) AS cantidad_jugadores
+FROM club c
+    INNER JOIN jugador j ON c.ID = j.ID_club
+GROUP BY
+    c.ID,
+    c.nombre
+HAVING
+    COUNT(j.ID) > 1
+ORDER BY promedio_rating DESC;
+
+DROP VIEW IF EXISTS promedio_sets_ganados_por_jugador;
+
+CREATE VIEW promedio_sets_ganados_por_jugador AS
+SELECT
+    j.ID AS jugador_ID,
+    j.nombre AS nombre_jugador,
+    j.apellido AS apellido_jugador,
+    AVG(
+        CASE
+            WHEN s.player1_games_won > s.player2_games_won
+            AND p.ID_jugador1 = j.ID THEN 1
+            WHEN s.player2_games_won > s.player1_games_won
+            AND p.ID_jugador2 = j.ID THEN 1
+            ELSE 0
+        END
+    ) AS promedio_sets_ganados
+FROM
+    jugador j
+    INNER JOIN partido p ON j.ID = p.ID_jugador1
+    OR j.ID = p.ID_jugador2
+    INNER JOIN sets s ON p.ID = s.ID_partido
+GROUP BY
+    j.ID,
+    j.nombre,
+    j.apellido
+ORDER BY promedio_sets_ganados DESC;
+
+DROP VIEW IF EXISTS promedio_edad_jugadores_por_club;
+
+CREATE VIEW promedio_edad_jugadores_por_club AS
+SELECT
+    c.ID AS club_ID,
+    c.nombre AS nombre_club,
+    AVG(
+        YEAR(CURDATE()) - YEAR(j.fecha_nac)
+    ) AS promedio_edad
+FROM club c
+    INNER JOIN jugador j ON c.ID = j.ID_club
+GROUP BY
+    c.ID,
+    c.nombre
+ORDER BY promedio_edad DESC;
+
+DROP VIEW IF EXISTS promedio_instancia_por_jugador;
+
+CREATE VIEW promedio_instancia_por_jugador AS
+SELECT
+    j.ID AS jugador_ID,
+    j.nombre AS nombre_jugador,
+    j.apellido AS apellido_jugador,
+    AVG(
+        CASE i.nombre
+            WHEN 'final' THEN 6
+            WHEN 'semifinal' THEN 5
+            WHEN 'cuartos' THEN 4
+            WHEN 'octavos' THEN 3
+            WHEN 'dieciseisavos' THEN 2
+            WHEN 'treintaidosavos' THEN 1
+            ELSE 0
+        END
+    ) AS promedio_instancia
+FROM
+    jugador j
+    INNER JOIN partido p ON j.ID = p.ID_jugador1
+    OR j.ID = p.ID_jugador2
+    INNER JOIN instancia i ON p.ID_instancia = i.ID
+GROUP BY
+    j.ID,
+    j.nombre,
+    j.apellido
+ORDER BY promedio_instancia DESC;
