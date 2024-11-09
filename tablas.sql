@@ -29,7 +29,7 @@ CREATE TABLE ubicacion (
 CREATE TABLE club (
     ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     nombre VARCHAR(50) NOT NULL,
-    ID_ubicacion INT NOT NULL,
+    ID_ubicacion INT NULL,
     fecha_creacion DATE NOT NULL,
     FOREIGN KEY (ID_ubicacion) REFERENCES ubicacion (ID) ON DELETE SET NULL
 );
