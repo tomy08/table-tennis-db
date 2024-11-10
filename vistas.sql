@@ -183,6 +183,54 @@ ORDER BY j.ID, i.nombre, j1.rating DESC, j2.rating DESC;
 DROP VIEW IF EXISTS obtener_partidos_ganados_por_jugador;
 -- obtener partidos ganados por jugador
 
+CREATE VIEW obtener_partidos_ganados_por_jugador AS
+SELECT
+    j.ID AS jugador_ID,
+    j.nombre AS nombre_jugador,
+    j.apellido AS apellido_jugador,
+    p.ID AS partido_ID,
+    i.nombre AS instancia_partido,
+    CASE
+        WHEN j.nombre = j1.nombre THEN j2.nombre
+        WHEN j.nombre = j2.nombre THEN j1.nombre
+    END AS nombre_rival,
+    CASE
+        WHEN j.nombre = j1.nombre THEN j2.apellido
+        WHEN j.nombre = j2.nombre THEN j1.apellido
+    END AS apellido_rival,
+    j1.id AS jugador1_id,
+    j2.id AS jugador2_id,
+    GROUP_CONCAT(
+        s.player1_games_won
+        ORDER BY s.numero_set
+    ) AS games_jugador1,
+    GROUP_CONCAT(
+        s.player2_games_won
+        ORDER BY s.numero_set
+    ) AS games_jugador2,
+    obtenerGanadorPartido (p.ID) AS ganador_id
+FROM
+    jugador j
+    INNER JOIN partido p ON j.ID = p.ID_jugador1
+    OR j.ID = p.ID_jugador2
+    INNER JOIN sets s ON p.ID = s.ID_partido
+    INNER JOIN jugador j1 ON p.ID_jugador1 = j1.ID
+    INNER JOIN jugador j2 ON p.ID_jugador2 = j2.ID
+    INNER JOIN instancia i ON p.ID_instancia = i.ID
+WHERE
+    j.ID = obtenerGanadorPartido (p.ID)
+GROUP BY
+    j.ID,
+    j.nombre,
+    j.apellido,
+    p.ID,
+    i.nombre,
+    j1.nombre,
+    j1.apellido,
+    j2.nombre,
+    j2.apellido
+ORDER BY j.ID, i.nombre, j1.rating DESC, j2.rating DESC;
+
 CREATE VIEW obtener_finales_por_jugador AS
 SELECT
     j.ID AS jugador_ID,
@@ -495,31 +543,31 @@ GROUP BY
     c.nombre
 ORDER BY promedio_edad DESC;
 
-DROP VIEW IF EXISTS promedio_instancia_por_jugador;
+DROP VIEW IF EXISTS winrate_jugador;
 
-CREATE VIEW promedio_instancia_por_jugador AS
+CREATE VIEW winrate_jugador AS
 SELECT
     j.ID AS jugador_ID,
     j.nombre AS nombre_jugador,
     j.apellido AS apellido_jugador,
-    AVG(
-        CASE i.nombre
-            WHEN 'final' THEN 6
-            WHEN 'semifinal' THEN 5
-            WHEN 'cuartos' THEN 4
-            WHEN 'octavos' THEN 3
-            WHEN 'dieciseisavos' THEN 2
-            WHEN 'treintaidosavos' THEN 1
+    SUM(
+        CASE
+            WHEN j.ID = obtenerGanadorPartido (p.ID) THEN 1
             ELSE 0
         END
-    ) AS promedio_instancia
-FROM
-    jugador j
+    ) AS partidos_ganados,
+    COUNT(*) AS partidos_jugados,
+    SUM(
+        CASE
+            WHEN j.ID = obtenerGanadorPartido (p.ID) THEN 1
+            ELSE 0
+        END
+    ) / COUNT(*) AS winrate
+FROM jugador j
     INNER JOIN partido p ON j.ID = p.ID_jugador1
     OR j.ID = p.ID_jugador2
-    INNER JOIN instancia i ON p.ID_instancia = i.ID
 GROUP BY
     j.ID,
     j.nombre,
     j.apellido
-ORDER BY promedio_instancia DESC;
+ORDER BY winrate DESC;
