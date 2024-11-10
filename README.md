@@ -2,7 +2,9 @@
 
 ## Contexto y Justificación
 
-La base de datos diseñada está orientada a la gestión de torneos de tenis de mesa. Este tema fue elegido debido al interés en los deportes y la necesidad de gestionar información detallada sobre jugadores, partidos, árbitros, clubes y sets. La base de datos resuelve la necesidad de almacenar y consultar información relevante para la organización y seguimiento de torneos, permitiendo obtener estadísticas detalladas y rankings de jugadores.
+La base de datos creada ayuda a organizar torneos de tenis de mesa. Elegí este tema porque me interesa el deporte y vi la necesidad de tener un sistema para manejar bien la información de los jugadores, partidos, árbitros y resultados.
+
+Con esta base de datos, es fácil almacenar y consultar todos estos datos, además de ver estadísticas y rankings de los jugadores. Si la conectara a una página web, se podría convertir en una aplicación muy parecida a las que existen hoy en día para la gestión de torneos y seguimiento de jugadores.
 
 ## Listado de Entidades, Atributos, Claves y Tipo de Datos Utilizados
 
