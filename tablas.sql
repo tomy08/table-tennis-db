@@ -70,7 +70,23 @@ CREATE TABLE instancia (
             'cuartos',
             'octavos',
             'dieciseisavos',
-            'treintaidosavos'
+            'treintaidosavos',
+            'grupo A',
+            'grupo B',
+            'grupo C',
+            'grupo D',
+            'grupo E',
+            'grupo F',
+            'grupo G',
+            'grupo H',
+            'grupo I',
+            'grupo J',
+            'grupo K',
+            'grupo L',
+            'grupo M',
+            'grupo N',
+            'grupo O',
+            'grupo P'
         )
     )
 );
