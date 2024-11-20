@@ -93,9 +93,9 @@ CREATE TABLE instancia (
 
 CREATE TABLE partido (
     ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    ID_arbitro INT NOT NULL,
-    ID_jugador1 INT NOT NULL,
-    ID_jugador2 INT NOT NULL,
+    ID_arbitro INT,
+    ID_jugador1 INT,
+    ID_jugador2 INT,
     ID_torneo INT NOT NULL,
     ID_instancia INT NOT NULL,
     FOREIGN KEY (ID_jugador1) REFERENCES jugador (ID) ON DELETE SET NULL,
